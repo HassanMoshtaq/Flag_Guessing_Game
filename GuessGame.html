@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flag guessing game</title> 
+
+    <!-- All the features like font-family, text-align will get applied to all the 
+    contents of the body -->
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            background-color: aqua;
+            padding: 20px;
+        }
+        img {
+            max-width: 105%;
+            max-height: 200px;
+            margin-bottom: 20px;
+        }
+        #guessInput {
+            height: 40px;
+            width: 90%;
+            margin: 10px auto;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        #submit-button {
+            height: 40px;
+            width: 90%;
+            margin: 10px auto;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        #resultMessage {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #startAgain-button {
+            height: 40px;
+            width: 90%;
+            margin: 10px auto;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        @media screen and (min-width: 768px) {
+            .Guessing-Game-Main {
+                max-width: 500px;
+                margin: 0 auto;
+                text-align: center;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+    <!-- The main container for the guessing game -->
+    <div class="Guessing-Game-Main">
+        <h1>Guess the country's flag</h1>
+
+        <!-- The container for the flag which is gonna get guessed -->
+        <div id="flag-container">
+            <!-- The flag's picture and from the source that is gonna get -->
+            <img id="flag-img" src="" alt="country flag">
+        </div>
+
+        <!-- The user will enter text and placeholder is used to demonstrate the message 
+        "Guess the flag's name please" inside the text-box -->
+        <input type="text" id="guessInput" placeholder="Enter the country name">
+        
+        <!-- The button with get-clicked feature -->
+        <button onclick="checkGuess()" id="submit-button">Submit Your Guess</button>
+        
+        <!-- Result Message -->
+        <p id="resultMessage"></p>
+        
+        <!-- Remaining Attempts -->
+        <p>You have <span id="guess-left">3</span> guess left</p>
+        
+        <!-- Start Again Button -->
+        <button onclick="startGameAgain()" id="startAgain-button">Start Again</button>
+
+    <!-- JavaScript codes Starting from here -->
+    <script>
+
+        // Array of random countries with their source from Wikipedia. 
+        const countries = [
+            { name: "USA", flag: "https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/1920px-Flag_of_the_United_States.svg.png" },
+            { name: "UK", flag: "https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/1920px-Flag_of_the_United_Kingdom.svg.png" },
+            { name: "France", flag: "https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/1920px-Flag_of_France.svg.png" },
+            { name: "Germany", flag: "https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/1920px-Flag_of_Germany.svg.png" },
+            { name: "Canada", flag: "https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/Flag_of_Canada.svg/1920px-Flag_of_Canada.svg.png" }
+            
+        ];
+
+        // Initializations
+        let randomCountryIndex = Math.floor(Math.random() * countries.length);
+        let currentCountry = countries[randomCountryIndex];
+        let remainingAttempts = 3;
+
+        // Set the flag image source
+        document.getElementById("flag-img").src = currentCountry.flag;
+
+        // Function to check the guess
+        function checkGuess() {
+            const guess = document.getElementById("guessInput").value.trim().toUpperCase();
+          
+            // Check if the guess is empty
+            if (guess === "") {
+                alert("Please enter something into the textbox.");
+                return; // Stop further execution
+            }
+          
+            // If the country name which is entered by uppercase is equal to user's guess.
+            if (guess === currentCountry.name.toUpperCase()) {
+                document.getElementById("resultMessage").textContent = "Congratulation You guessed the countrie's flag correctly.";
+            } else {
+                remainingAttempts--;
+
+                if (remainingAttempts > 0) {
+                    document.getElementById("resultMessage").textContent = `Wrong guess! You have ${remainingAttempts} attempts left.`;
+                } else {
+                    document.getElementById("resultMessage").textContent = `You lost the game. The correct answer was ${currentCountry.name}.`;
+                    document.getElementById("guessInput").disabled = true;
+                }
+            }
+        }
+
+        // Start game again by clicking on start again button.
+        function startGameAgain() {
+            randomCountryIndex = Math.floor(Math.random() * countries.length);
+            currentCountry = countries[randomCountryIndex];
+            remainingAttempts = 3;
+
+            document.getElementById("flag-img").src = currentCountry.flag;
+            document.getElementById("resultMessage").textContent = "";
+            document.getElementById("guessInput").value = "";
+            document.getElementById("guessInput").disabled = false;
+            document.getElementById("guess-left").textContent = remainingAttempts;
+        }
+    </script>
+      
+    </div>
+
+    <p style="font-size: 12px; margin-top: 20px;">Created by @Hassan Moshtaq</p>
+</body>
+</html>
